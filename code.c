@@ -68,6 +68,16 @@ void loop() {
 	    if (event.type == SDL_QUIT)
 		return;
 	}
+
+        // get cursor position relative to window
+        int mouse_x, mouse_y;
+        int buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
+
+	// check if mouse in central rect
+	if (mouse_x > 214 && mouse_x < 428 && mouse_y > 160 && mouse_y < 320) {
+	    SDL_Log("Collision!\n");
+	}
+
 	SDL_Delay(1000/5);
     }
 }
