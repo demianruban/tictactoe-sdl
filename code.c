@@ -10,7 +10,7 @@
 SDL_Window* win;
 SDL_Renderer* rend;
 
-SDL_Rect* cells[9];
+// SDL_Rect* cells[9]; // TODO make intuitive collision handler
 
 int main(void) {
 
@@ -19,7 +19,6 @@ int main(void) {
 	return 1;
     } else {
 	drwfield(rend);
-	//drwcross(rend);
 
 	loop();
 
@@ -84,8 +83,7 @@ bool init() {
 }
 
 void loop(void) {
-    bool close = false;
-    while (!close) {
+    while (1) {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 	    if (event.type == SDL_QUIT)
@@ -94,11 +92,13 @@ void loop(void) {
 
         // get cursor position relative to window
         int mouse_x, mouse_y;
-        SDL_GetMouseState(&mouse_x, &mouse_y);
+        int buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
 
 	// check if mouse in central rect
-	if (mouse_x > 214 && mouse_x < 428 && mouse_y > 160 && mouse_y < 320) {
-	    SDL_Log("Collision!\n");
+        if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT))
+	{
+	    if (mouse_x > 214 && mouse_x < 428 && mouse_y > 160 && mouse_y < 320)
+		SDL_Log("You pressed the cell in the middle!\n");
 	}
 
 	SDL_Delay(1000/5);
@@ -107,12 +107,8 @@ void loop(void) {
 
 void drwcross(SDL_Renderer* rend)
 {
-    //SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-
     // make cross be a little off borders
     SDL_RenderDrawLine(rend, 10, 10, 204, 160);
     SDL_RenderDrawLine(rend, 204, 10, 10, 160);
-
-    //SDL_RenderPresent(rend);
 }
 
