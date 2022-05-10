@@ -10,7 +10,7 @@
 SDL_Window* win;
 SDL_Renderer* rend;
 
-void render_field() {
+void render_field(SDL_Renderer* rend) {
     // make screen white
     SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
     SDL_RenderClear(rend);
@@ -27,35 +27,49 @@ void render_field() {
 }
 
 bool init() {
+    bool success = true;
+
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0)
     {
 	printf("error initializing SDL: %s\n", SDL_GetError());
 	return 1;
+    } else {
+
+	win = SDL_CreateWindow("TicTacToe",
+				SDL_WINDOWPOS_CENTERED,
+				SDL_WINDOWPOS_CENTERED,
+				WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+
+	if (!win)
+	{
+	    printf("error creating window: %s\n", SDL_GetError());
+	    SDL_Quit();
+	    success = false;
+	} else {
+
+	    rend = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+
+	    if (!rend)
+	    {
+	      printf("error creating renderer: %s\n", SDL_GetError());
+	      success = false;
+	    }
+	}
     }
 
-    SDL_Window* win = SDL_CreateWindow("TicTacToe",
-					SDL_WINDOWPOS_CENTERED,
-					SDL_WINDOWPOS_CENTERED,
-					WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+    return success;
+}
 
-    if (!win)
-    {
-        printf("error creating window: %s\n", SDL_GetError());
-        SDL_Quit();
-	    return 1;
+void loop() {
+    bool close = false;
+    while (!close) {
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+	    if (event.type == SDL_QUIT)
+		return;
+	}
+	SDL_Delay(1000/5);
     }
-
-    SDL_Renderer* rend = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
-
-    if (!rend)
-    {
-      printf("error creating renderer: %s\n", SDL_GetError());
-      SDL_DestroyWindow(win);
-      SDL_Quit();
-      return 1;
-    }
-
-    return true;
 }
 
 int main(void) {
@@ -64,10 +78,12 @@ int main(void) {
 	printf("Couldn't initialize!");
 	return 1;
     } else {
-	render_field();
+	render_field(rend);
 
-	SDL_Delay(5000);
+	loop();
 
+	SDL_DestroyRenderer(rend);
+	SDL_DestroyWindow(win);
 	SDL_Quit();
 
 	return 0;
