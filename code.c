@@ -10,18 +10,41 @@
 SDL_Window* win;
 SDL_Renderer* rend;
 
-void render_field(SDL_Renderer* rend) {
+SDL_Rect* cells[9];
+
+int main(void) {
+
+    if (!init()) {
+	printf("Couldn't initialize!");
+	return 1;
+    } else {
+	drwfield(rend);
+	//drwcross(rend);
+
+	loop();
+
+	SDL_DestroyRenderer(rend);
+	SDL_DestroyWindow(win);
+	SDL_Quit();
+
+	return 0;
+    }
+}
+
+void drwfield(SDL_Renderer* rend) {
     // make screen white
     SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
     SDL_RenderClear(rend);
 
-    // procedurically create tictactoe field
+    // TODO procedurically create tictactoe field
     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
 
     SDL_RenderDrawLine(rend, 214, 10, 214, 470);
     SDL_RenderDrawLine(rend, 428, 10, 428, 470);
     SDL_RenderDrawLine(rend, 10,  160, 630, 160);
     SDL_RenderDrawLine(rend, 10,  320, 630, 320);
+
+    drwcross(rend);
 
     SDL_RenderPresent(rend);
 }
@@ -60,7 +83,7 @@ bool init() {
     return success;
 }
 
-void loop() {
+void loop(void) {
     bool close = false;
     while (!close) {
 	SDL_Event event;
@@ -71,7 +94,7 @@ void loop() {
 
         // get cursor position relative to window
         int mouse_x, mouse_y;
-        int buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
+        SDL_GetMouseState(&mouse_x, &mouse_y);
 
 	// check if mouse in central rect
 	if (mouse_x > 214 && mouse_x < 428 && mouse_y > 160 && mouse_y < 320) {
@@ -82,21 +105,14 @@ void loop() {
     }
 }
 
-int main(void) {
+void drwcross(SDL_Renderer* rend)
+{
+    //SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
 
-    if (!init()) {
-	printf("Couldn't initialize!");
-	return 1;
-    } else {
-	render_field(rend);
+    // make cross be a little off borders
+    SDL_RenderDrawLine(rend, 10, 10, 204, 160);
+    SDL_RenderDrawLine(rend, 204, 10, 10, 160);
 
-	loop();
-
-	SDL_DestroyRenderer(rend);
-	SDL_DestroyWindow(win);
-	SDL_Quit();
-
-	return 0;
-    }
+    //SDL_RenderPresent(rend);
 }
 
