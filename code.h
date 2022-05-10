@@ -1,2 +1,6 @@
-void render_field(SDL_Window* win, SDL_Renderer* rend);
+#include <SDL_render.h>
+#include <stdbool.h>
+
+void render_field();
+bool init();
 

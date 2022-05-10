@@ -1,12 +1,32 @@
 #include "code.h"
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <SDL2/SDL.h>
 
 #define WINDOW_WIDTH (640)
 #define WINDOW_HEIGHT (480)
 
-int main(void) {
+SDL_Window* win;
+SDL_Renderer* rend;
+
+void render_field() {
+    // make screen white
+    SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
+    SDL_RenderClear(rend);
+
+    // procedurically create tictactoe field
+    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+
+    SDL_RenderDrawLine(rend, 214, 10, 214, 470);
+    SDL_RenderDrawLine(rend, 428, 10, 428, 470);
+    SDL_RenderDrawLine(rend, 10,  160, 630, 160);
+    SDL_RenderDrawLine(rend, 10,  320, 630, 320);
+
+    SDL_RenderPresent(rend);
+}
+
+bool init() {
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0)
     {
 	printf("error initializing SDL: %s\n", SDL_GetError());
@@ -27,20 +47,6 @@ int main(void) {
 
     SDL_Renderer* rend = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
-    // make screen white
-    SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
-    SDL_RenderClear(rend);
-
-    // procedurically create tictactoe field
-    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-
-    SDL_RenderDrawLine(rend, 214, 10, 214, 470);
-    SDL_RenderDrawLine(rend, 428, 10, 428, 470);
-    SDL_RenderDrawLine(rend, 10,  160, 630, 160);
-    SDL_RenderDrawLine(rend, 10,  320, 630, 320);
-
-    SDL_RenderPresent(rend);
-
     if (!rend)
     {
       printf("error creating renderer: %s\n", SDL_GetError());
@@ -49,10 +55,22 @@ int main(void) {
       return 1;
     }
 
+    return true;
+}
 
-    SDL_Delay(5000);
+int main(void) {
 
-    SDL_Quit();
-    return 0;
+    if (!init()) {
+	printf("Couldn't initialize!");
+	return 1;
+    } else {
+	render_field();
+
+	SDL_Delay(5000);
+
+	SDL_Quit();
+
+	return 0;
+    }
 }
 
