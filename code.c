@@ -82,7 +82,7 @@ bool init() {
     return success;
 }
 
-void loop(void) {
+void loop() {
     while (1) {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
