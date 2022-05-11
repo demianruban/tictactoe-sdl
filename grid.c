@@ -13,7 +13,7 @@ void drwgrid(SDL_Renderer* rend)
     int cellsize = WIDTH / ROWS;
 
     /* Correction of the original code with changing < operator to <=.
-     * This addes the last lines to the screen, which was
+     * This adds the last lines to the screen, which was
      * handled by built-in Java function pack() in the original code.
      */
     for (int x = 0; x <= ROWS; x++) { // vertical lines
