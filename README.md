@@ -1,4 +1,4 @@
-# TicTacToe in C with SDL2
+# TicTacToe in C with SDL2 (early state)
 Currenly runs on linux only with *make* and *clang*
 
 ### Building
