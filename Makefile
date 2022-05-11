@@ -4,13 +4,13 @@
 CC := clang
 
 # set the compiler flags
-CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c99 -Wall -lSDL2_image -lm
+CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c99 -Wall -lSDL2_image
 
 # add header files here
 HDRS :=
 
 # add source files here
-SRCS := code.c
+SRCS := main.c grid.c cell.c
 
 # generate names of object files
 OBJS := $(SRCS:.c=.o)
