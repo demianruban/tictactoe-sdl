@@ -1,11 +1,8 @@
-#include "code.h"
+#include "main.h"
 
 #include <stdio.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
-
-#define WINDOW_WIDTH (640)
-#define WINDOW_HEIGHT (480)
 
 SDL_Window* win;
 SDL_Renderer* rend;
@@ -18,34 +15,17 @@ int main(void) {
 	printf("Couldn't initialize!");
 	return 1;
     } else {
-	drwfield(rend);
+	drwgrid(rend);
 
 	loop();
 
+	// TODO add efficient memory freeing
 	SDL_DestroyRenderer(rend);
 	SDL_DestroyWindow(win);
 	SDL_Quit();
 
 	return 0;
     }
-}
-
-void drwfield(SDL_Renderer* rend) {
-    // make screen white
-    SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
-    SDL_RenderClear(rend);
-
-    // TODO procedurically create tictactoe field
-    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-
-    SDL_RenderDrawLine(rend, 214, 10, 214, 470);
-    SDL_RenderDrawLine(rend, 428, 10, 428, 470);
-    SDL_RenderDrawLine(rend, 10,  160, 630, 160);
-    SDL_RenderDrawLine(rend, 10,  320, 630, 320);
-
-    drwcross(rend);
-
-    SDL_RenderPresent(rend);
 }
 
 bool init() {
@@ -60,7 +40,7 @@ bool init() {
 	win = SDL_CreateWindow("TicTacToe",
 				SDL_WINDOWPOS_CENTERED,
 				SDL_WINDOWPOS_CENTERED,
-				WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+				WIDTH, HEIGHT, 0);
 
 	if (!win)
 	{
@@ -103,12 +83,5 @@ void loop() {
 
 	SDL_Delay(1000/5);
     }
-}
-
-void drwcross(SDL_Renderer* rend)
-{
-    // make cross be a little off borders
-    SDL_RenderDrawLine(rend, 10, 10, 204, 160);
-    SDL_RenderDrawLine(rend, 204, 10, 10, 160);
 }
 

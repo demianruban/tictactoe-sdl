@@ -1,7 +1,7 @@
 #include "main.h"
 #include <SDL_image.h>
 
-void drwcell(SDL_Renderer* rend, int type)
+void drwmarker(SDL_Renderer* rend, int type)
 {
     SDL_Rect dest;
 
