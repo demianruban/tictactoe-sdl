@@ -1,6 +1,11 @@
 #include "main.h"
 #include <SDL_image.h>
 
+struct Marker {
+    int type;
+    int (*render)(SDL_Renderer* rend);
+}
+
 void drwmarker(SDL_Renderer* rend, int type)
 {
     SDL_Rect dest;
@@ -23,7 +28,7 @@ void drwmarker(SDL_Renderer* rend, int type)
     dest.w /= 3;
     dest.h /= 3;
 
-    printf("calc: %d\n", WIDTH/dest.h);
+    printf("calc: %d\n", SCREEN_WIDTH/dest.h);
 
     dest.x = 0;
     dest.y = 0;

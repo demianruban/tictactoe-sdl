@@ -1,13 +1,15 @@
-#include "main.h"
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
+#include "main.h"
+#include "placement.h"
+#include "grid.h"
 
 SDL_Window* win;
 SDL_Renderer* rend;
 
-// SDL_Rect* cells[9]; // TODO make intuitive collision handler
+SDL_Point mousePos;
+Grid* grid;
 
 int main(void) {
 
@@ -15,7 +17,8 @@ int main(void) {
 	printf("Couldn't initialize!");
 	return 1;
     } else {
-	drwgrid(rend);
+
+	grid = createGrid();
 
 	loop();
 
@@ -40,7 +43,7 @@ bool init() {
 	win = SDL_CreateWindow("TicTacToe",
 				SDL_WINDOWPOS_CENTERED,
 				SDL_WINDOWPOS_CENTERED,
-				WIDTH, HEIGHT, 0);
+				SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 
 	if (!win)
 	{
@@ -70,18 +73,20 @@ void loop() {
 		return;
 	}
 
-        // get cursor position relative to window
-        int mouse_x, mouse_y;
-        int buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
-
-	// check if mouse in central rect
-        if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT))
-	{
-	    if (mouse_x > 214 && mouse_x < 428 && mouse_y > 160 && mouse_y < 320)
-		SDL_Log("You pressed the cell in the middle!\n");
-	}
+	handleMouse();
+	updateGrid(grid);
+	renderGrid(rend, grid);
 
 	SDL_Delay(1000/5);
+    }
+}
+
+void handleMouse()
+{
+    int buttons = SDL_GetMouseState(&mousePos.x, &mousePos.y);
+
+    if (buttons) {
+	mouseInputGrid(grid, mousePos);
     }
 }
 

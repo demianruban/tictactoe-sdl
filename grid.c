@@ -1,26 +1,58 @@
 #include "main.h"
+#include "grid.h"
 
-#define GRIDTHICKNESS 16
-
-void drwgrid(SDL_Renderer* rend)
+Grid* createGrid()
 {
+    grid->placements[SIZE];
+    grid->gridsize = SCREEN_WIDTH / ROWS;
+    grid->thickness = 16;
+
+    int size = SCREEN_WIDTH / ROWS;
+
+    for (int i = 0; i < SIZE; i++) {
+        int xIndex = i % ROWS;
+        int yIndex = i / ROWS;
+
+        placements[i] = createPlacement(xIndex, yIndex, size);
+    }
+
+    return grid;
+}
+
+void updateGrid(Grid* grid)
+{
+    for (int i = 0; i < SIZE; i++)
+	updatePlacement(grid->placements[i]);
+}
+
+void mouseInputGrid(Grid* grid, SDL_Point* mousePos)
+{
+    for (int i = 0; i < SIZE; i++)
+	hoverPlacement(mousePos, grid->placements[i]);
+}
+
+void renderGrid(SDL_Renderer* rend, Grid* grid)
+{
+
+    // render placements with effects
+    for (int i = 0; i < SIZE; i++)
+	renderPlacement(rend, grid->placements[i]);
+
     // set bg color
     SDL_SetRenderDrawColor(rend, 0x46, 0x46, 0x46, 0xFF);
     SDL_RenderClear(rend);
 
     SDL_SetRenderDrawColor(rend, 0x2E, 0x2E, 0x2E, 0xFF);
 
-    int cellsize = WIDTH / ROWS;
-
     /* Correction of the original code with changing < operator to <=.
      * This adds the last lines to the screen, which was
      * handled by built-in Java function pack() in the original code.
      */
     for (int x = 0; x <= ROWS; x++) { // vertical lines
-        SDL_Rect rowrect = {x * cellsize - (GRIDTHICKNESS / 2), 0, GRIDTHICKNESS, WIDTH};
+        SDL_Rect rowrect = {x * grid.size - (grid.thickness / 2), 0, grid.thickness, SCREEN_WIDTH};
         SDL_RenderFillRect(rend, &rowrect);
         for (int y = 0; y <= ROWS; y++) { // horizontal lines
-            SDL_Rect colrect = {0, y * cellsize - (GRIDTHICKNESS / 2), WIDTH, GRIDTHICKNESS};
+            SDL_Rect colrect = {0, y * grid.size - (grid.thickness / 2), SCREEN_WIDTH, grid.thickness};
             SDL_RenderFillRect(rend, &colrect);
         }
     }
