@@ -1,10 +1,13 @@
 #include "placement.h"
+
 typedef struct {
-    Placement* placements[SIZE];
     int size;
     int thickness;
+    Placement* placements[SIZE];
 } Grid;
 
-Grid* createGrid(Placements* placements, Grid* grid);
-void renderGrid(SDL_Renderer* rend);
+Grid* createGrid();
+void updateGrid(Grid* grid);
+void mouseInputGrid(Grid* grid, SDL_Point mousePos);
+void renderGrid(SDL_Renderer* rend, Grid* grid);
 

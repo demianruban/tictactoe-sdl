@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 #include "main.h"
-#include "placement.h"
 #include "grid.h"
 
 SDL_Window* win;
@@ -20,7 +19,8 @@ int main(void) {
 
 	grid = createGrid();
 
-	loop();
+	//loop();
+	printf("initialized!");
 
 	// TODO add efficient memory freeing
 	SDL_DestroyRenderer(rend);
