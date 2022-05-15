@@ -7,7 +7,7 @@ CC := clang
 CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c99 -Wall -lSDL2_image
 
 # add header files here
-HDRS :=
+HDRS := main.h grid.h placement.h
 
 # add source files here
 SRCS := main.c grid.c placement.c
@@ -20,6 +20,9 @@ EXEC := app
 
 # default recipe
 all: $(EXEC)
+
+run: $(EXEC)
+	./app
 
 # recipe for building the final executable
 $(EXEC): $(HDRS) $(OBJS) Makefile

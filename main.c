@@ -19,8 +19,7 @@ int main(void) {
 
 	grid = createGrid();
 
-	//loop();
-	printf("initialized!");
+	loop();
 
 	// TODO add efficient memory freeing
 	SDL_DestroyRenderer(rend);
@@ -59,6 +58,9 @@ bool init() {
 	      printf("error creating renderer: %s\n", SDL_GetError());
 	      success = false;
 	    }
+
+	    // this enables alpha blending functionality
+	    SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
 	}
     }
 
@@ -77,16 +79,13 @@ void loop() {
 	updateGrid(grid);
 	renderGrid(rend, grid);
 
-	SDL_Delay(1000/5);
+	SDL_Delay(1000/60);
     }
 }
 
 void handleMouse()
 {
-    int buttons = SDL_GetMouseState(&mousePos.x, &mousePos.y);
-
-    if (buttons) {
-	mouseInputGrid(grid, mousePos);
-    }
+    SDL_GetMouseState(&mousePos.x, &mousePos.y);
+    mouseInputGrid(grid, mousePos);
 }
 

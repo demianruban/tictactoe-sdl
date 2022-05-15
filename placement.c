@@ -5,42 +5,45 @@
 
 Placement* createPlacement(int xIndex, int yIndex, int size)
 {
+    // all structs must be allocated!
     Placement* place = malloc(sizeof(Placement));
-    place->hoverColor = (SDL_Color){0x0A, 0x0A, 0x0A, 0xFF};
-    place->fadeSpeed = 0.1;
-    place->markerPlaced = false;
-    place->fadeIn = false;
-    place->alpha = 0;
+    *place = (Placement){
+		.fadeSpeed=0.1,
+		.markerPlaced=false,
+		.fadeIn=false,
+		.alpha=0,
+		.rect=malloc(sizeof(SDL_Rect))
+		};
+
     place->rect->x = xIndex * size;
     place->rect->y = yIndex * size;
     place->rect->w = size;
     place->rect->h = size;
+
+    // debug
+    SDL_Log("placement rect: %d %d %d %d", place->rect->x, place->rect->y, place->rect->w, place->rect->h);
 
     return place;
 }
 
 void updatePlacement(Placement* place)
 {
-    if (place->fadeIn && place->alpha != 1) {
-	place->alpha += place->fadeSpeed;
-	if (place->alpha > 1)
-	    place->alpha = 1;
-    } else if (!place->fadeIn && place->alpha != 0) {
-	place->alpha -= place->fadeSpeed;
-	if (place->alpha < 0)
-	    place->alpha = 0;
+    // value of alpha reverts itself if it's
+    // equal to 255 so make sure don't touch the
+    // borders of it (8 byte integer)
+    if (place->fadeIn && place->alpha < 0.9) {
+	place->alpha += 0.1;
+    } else if (!place->fadeIn && place->alpha > 0.1) {
+	place->alpha -= 0.1;
     }
 }
 
 void renderPlacement(SDL_Renderer *rend, Placement* place)
 {
-    SDL_SetRenderDrawColor(rend, place->hoverColor.r,
-			place->hoverColor.g,
-			place->hoverColor.b,
+    SDL_SetRenderDrawColor(rend, 160, 160, 160,
 			(int)(place->alpha * 255));
 
     SDL_RenderFillRect(rend, place->rect);
-    SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
 }
 
 void hoverPlacement(Placement* place, SDL_Point mousePos)
