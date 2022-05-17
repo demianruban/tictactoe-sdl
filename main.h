@@ -7,6 +7,8 @@
 #define MATCH 3
 #define SIZE (ROWS)*(ROWS)
 #define CELLSIZE (int)((SCREEN_WIDTH)/(ROWS))
+#define GRIDTHICKNESS 16
+#define DEBUG
 
 bool init();
 void loop();

@@ -2,6 +2,11 @@
 #include <SDL_rect.h>
 #include <SDL_render.h>
 #include "placement.h"
+#include "main.h"
+
+#if defined(DEBUG)
+#include <SDL_log.h>
+#endif
 
 Placement* createPlacement(int xIndex, int yIndex, int size)
 {
@@ -20,8 +25,9 @@ Placement* createPlacement(int xIndex, int yIndex, int size)
     place->rect->w = size;
     place->rect->h = size;
 
-    // debug
+#if defined(DEBUG)
     SDL_Log("placement rect: %d %d %d %d", place->rect->x, place->rect->y, place->rect->w, place->rect->h);
+#endif
 
     return place;
 }

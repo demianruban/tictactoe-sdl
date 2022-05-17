@@ -8,7 +8,7 @@ SDL_Window* win;
 SDL_Renderer* rend;
 
 SDL_Point mousePos;
-Grid* grid;
+Placement** grid;
 
 int main(void) {
 
@@ -75,17 +75,16 @@ void loop() {
 		return;
 	}
 
-	handleMouse();
+	int buttons = SDL_GetMouseState(&mousePos.x, &mousePos.y);
+
+	mouseInputGrid(grid, mousePos, buttons);
 	updateGrid(grid);
 	renderGrid(rend, grid);
 
+	/* it's separate for not calling it multiple times */
+	SDL_RenderPresent(rend);
+
 	SDL_Delay(1000/60);
     }
-}
-
-void handleMouse()
-{
-    int buttons = SDL_GetMouseState(&mousePos.x, &mousePos.y);
-    mouseInputGrid(grid, mousePos, buttons);
 }
 
