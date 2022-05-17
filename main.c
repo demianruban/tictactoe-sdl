@@ -71,22 +71,24 @@ bool init() {
 
 void loop() {
     while (1) {
+
+	SDL_GetMouseState(&mousePos.x, &mousePos.y);
+
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 	    switch (event.type) {
 		case SDL_QUIT:
 		    return;
 		case SDL_MOUSEMOTION:
-		    mouseInputGrid(grid, mousePos, false);
-		case SDL_MOUSEBUTTONDOWN:
-		    mouseInputGrid(grid, mousePos, true);
+		    mouseMoveGrid(grid, mousePos);
+		    break;
+		case SDL_MOUSEBUTTONUP:
+		    mouseClickGrid(grid, mousePos);
+		    break;
 	    }
 
 	}
 
-	int buttons = SDL_GetMouseState(&mousePos.x, &mousePos.y);
-
-	mouseInputGrid(grid, mousePos, buttons);
 	updateGrid(grid);
 	renderGrid(grid);
 

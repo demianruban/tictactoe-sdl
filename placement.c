@@ -43,7 +43,7 @@ void updatePlacement(Placement* place)
     // value of alpha reverts itself if it's
     // equal to 255 so make sure don't touch the
     // borders of it (8 byte integer)
-    if (!place->markerPlaced) {
+    if (!place->marker) { // no marker placed
 	if (place->fadeIn && place->alpha < 0.9) {
 	    place->alpha += 0.1;
 	} else if (!place->fadeIn && place->alpha > 0.1) {
@@ -54,7 +54,7 @@ void updatePlacement(Placement* place)
 
 void renderPlacement(Placement* place)
 {
-    if (place->marker == NULL) { // if no marker set
+    if (!place->marker) { // if no marker set
 	SDL_SetRenderDrawColor(renderer, 160, 160, 160,
 			    (int)(place->alpha * 255));
 
@@ -64,22 +64,24 @@ void renderPlacement(Placement* place)
     }
 }
 
-void hoverPlacement(Placement* place, SDL_Point mousePos, bool pressed)
+void hoverPlacement(Placement* place, SDL_Point mousePos)
 {
     if (SDL_PointInRect(&mousePos, place->rect)) {
-	if (!pressed) { // no buttons pressed
-	    place->fadeIn = true;
-	} else if (pressed) {
-	    if (markerCount < SIZE) {
-		place->marker = createMarker(markerCount);
-		markerCount++;
-	    } else {
-		// TODO end game block
-		markerCount = 0;
-	    }
-	}
+	place->fadeIn = true;
     } else {
 	place->fadeIn = false;
+    }
+}
+
+void clickPlacement(Placement* place, SDL_Point mousePos)
+{
+    if (SDL_PointInRect(&mousePos, place->rect) && !place->marker) {
+	if (markerCount < SIZE) {
+	    place->marker = createMarker(markerCount);
+	    markerCount++;
+	} else {
+	    // TODO end game block
+	}
     }
 }
 

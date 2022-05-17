@@ -7,12 +7,12 @@ Marker* createMarker(int type)
 {
     Marker* marker = malloc(sizeof(Marker));
 
-    marker->type = type % 2;
-
     SDL_Surface* surface;
 
-    // 1 == x, 0 == o
-    if (type) {
+    marker->type = type % 2;
+
+    // 1 == x and 0 == o
+    if (marker->type) {
 	surface = IMG_Load("res/x.png");
     } else {
 	surface = IMG_Load("res/o.png");

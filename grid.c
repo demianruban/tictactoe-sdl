@@ -22,10 +22,15 @@ void updateGrid(Placement* placements[])
 	updatePlacement(placements[i]);
 }
 
-void mouseInputGrid(Placement* placements[], SDL_Point mousePos, bool pressed)
+void mouseMoveGrid(Placement* placements[], SDL_Point mousePos)
 {
     for (int i = 0; i < SIZE; i++)
-	hoverPlacement(placements[i], mousePos, pressed);
+	hoverPlacement(placements[i], mousePos);
+}
+void mouseClickGrid(Placement* placements[], SDL_Point mousePos)
+{
+    for (int i = 0; i < SIZE; i++)
+	clickPlacement(placements[i], mousePos);
 }
 
 void renderGrid(Placement* placements[])
