@@ -8,6 +8,6 @@ typedef struct {
 
 Grid* createGrid();
 void updateGrid(Grid* grid);
-void mouseInputGrid(Grid* grid, SDL_Point mousePos);
+void mouseInputGrid(Grid* grid, SDL_Point mousePos, int buttons);
 void renderGrid(SDL_Renderer* rend, Grid* grid);
 

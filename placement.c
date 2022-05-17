@@ -31,10 +31,12 @@ void updatePlacement(Placement* place)
     // value of alpha reverts itself if it's
     // equal to 255 so make sure don't touch the
     // borders of it (8 byte integer)
-    if (place->fadeIn && place->alpha < 0.9) {
-	place->alpha += 0.1;
-    } else if (!place->fadeIn && place->alpha > 0.1) {
-	place->alpha -= 0.1;
+    if (!place->markerPlaced) {
+	if (place->fadeIn && place->alpha < 0.9) {
+	    place->alpha += 0.1;
+	} else if (!place->fadeIn && place->alpha > 0.1) {
+	    place->alpha -= 0.1;
+	}
     }
 }
 
@@ -53,5 +55,13 @@ void hoverPlacement(Placement* place, SDL_Point mousePos)
     } else {
 	place->fadeIn = false;
     }
+}
+
+void setPlacement(Placement* place, bool isSet)
+{
+    place->markerPlaced = isSet;
+
+    if(isSet)
+	place->fadeIn = false;
 }
 

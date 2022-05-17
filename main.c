@@ -85,7 +85,7 @@ void loop() {
 
 void handleMouse()
 {
-    SDL_GetMouseState(&mousePos.x, &mousePos.y);
-    mouseInputGrid(grid, mousePos);
+    int buttons = SDL_GetMouseState(&mousePos.x, &mousePos.y);
+    mouseInputGrid(grid, mousePos, buttons);
 }
 

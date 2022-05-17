@@ -6,6 +6,7 @@
 #define ROWS 3
 #define MATCH 3
 #define SIZE (ROWS)*(ROWS)
+#define CELLSIZE (int)((SCREEN_WIDTH)/(ROWS))
 
 bool init();
 void loop();
