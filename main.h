@@ -1,5 +1,7 @@
-#include <SDL_render.h>
+// globals
 #include <stdbool.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #define SCREEN_WIDTH (500)
 #define SCREEN_HEIGHT (500)
@@ -9,6 +11,8 @@
 #define CELLSIZE (int)((SCREEN_WIDTH)/(ROWS))
 #define GRIDTHICKNESS 16
 #define DEBUG
+
+// globals
 
 bool init();
 void loop();

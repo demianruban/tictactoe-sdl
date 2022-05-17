@@ -5,10 +5,12 @@
 #include "grid.h"
 
 SDL_Window* win;
-SDL_Renderer* rend;
+SDL_Renderer* renderer;
 
 SDL_Point mousePos;
 Placement** grid;
+
+int markerCount = 0;
 
 int main(void) {
 
@@ -22,7 +24,7 @@ int main(void) {
 	loop();
 
 	// TODO add efficient memory freeing
-	SDL_DestroyRenderer(rend);
+	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(win);
 	SDL_Quit();
 
@@ -51,16 +53,16 @@ bool init() {
 	    success = false;
 	} else {
 
-	    rend = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+	    renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
-	    if (!rend)
+	    if (!renderer)
 	    {
 	      printf("error creating renderer: %s\n", SDL_GetError());
 	      success = false;
 	    }
 
 	    // this enables alpha blending functionality
-	    SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
+	    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	}
     }
 
@@ -71,18 +73,25 @@ void loop() {
     while (1) {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
-	    if (event.type == SDL_QUIT)
-		return;
+	    switch (event.type) {
+		case SDL_QUIT:
+		    return;
+		case SDL_MOUSEMOTION:
+		    mouseInputGrid(grid, mousePos, false);
+		case SDL_MOUSEBUTTONDOWN:
+		    mouseInputGrid(grid, mousePos, true);
+	    }
+
 	}
 
 	int buttons = SDL_GetMouseState(&mousePos.x, &mousePos.y);
 
 	mouseInputGrid(grid, mousePos, buttons);
 	updateGrid(grid);
-	renderGrid(rend, grid);
+	renderGrid(grid);
 
 	/* it's separate for not calling it multiple times */
-	SDL_RenderPresent(rend);
+	SDL_RenderPresent(renderer);
 
 	SDL_Delay(1000/60);
     }

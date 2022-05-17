@@ -1,7 +1,12 @@
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_image.h>
 
 typedef struct {
-    int x, y;
     int type;
     SDL_Texture* tex;
 } Marker;
+
+extern SDL_Renderer* renderer;
+
+Marker* createMarker(int type);
 

@@ -1,12 +1,15 @@
 #include <stdbool.h>
-#include <SDL_rect.h>
 #include <SDL_render.h>
+#include <SDL_mouse.h>
 #include "placement.h"
 #include "main.h"
 
 #if defined(DEBUG)
 #include <SDL_log.h>
 #endif
+
+extern int markerCount;
+extern SDL_Renderer* renderer;
 
 Placement* createPlacement(int xIndex, int yIndex, int size)
 {
@@ -17,13 +20,16 @@ Placement* createPlacement(int xIndex, int yIndex, int size)
 		.markerPlaced=false,
 		.fadeIn=false,
 		.alpha=0,
-		.rect=malloc(sizeof(SDL_Rect))
+		.rect=malloc(sizeof(SDL_Rect)),
+		.marker=malloc(sizeof(Marker))
 		};
 
     place->rect->x = xIndex * size;
     place->rect->y = yIndex * size;
     place->rect->w = size;
     place->rect->h = size;
+
+    place->marker = NULL;
 
 #if defined(DEBUG)
     SDL_Log("placement rect: %d %d %d %d", place->rect->x, place->rect->y, place->rect->w, place->rect->h);
@@ -46,28 +52,34 @@ void updatePlacement(Placement* place)
     }
 }
 
-void renderPlacement(SDL_Renderer *rend, Placement* place)
+void renderPlacement(Placement* place)
 {
-    SDL_SetRenderDrawColor(rend, 160, 160, 160,
-			(int)(place->alpha * 255));
+    if (place->marker == NULL) { // if no marker set
+	SDL_SetRenderDrawColor(renderer, 160, 160, 160,
+			    (int)(place->alpha * 255));
 
-    SDL_RenderFillRect(rend, place->rect);
-}
-
-void hoverPlacement(Placement* place, SDL_Point mousePos)
-{
-    if (SDL_PointInRect(&mousePos, place->rect)) {
-	place->fadeIn = true;
-    } else {
-	place->fadeIn = false;
+	SDL_RenderFillRect(renderer, place->rect);
+    } else { // if there is a marker
+	SDL_RenderCopy(renderer, place->marker->tex, NULL, place->rect);
     }
 }
 
-void setPlacement(Placement* place, bool isSet)
+void hoverPlacement(Placement* place, SDL_Point mousePos, bool pressed)
 {
-    place->markerPlaced = isSet;
-
-    if(isSet)
+    if (SDL_PointInRect(&mousePos, place->rect)) {
+	if (!pressed) { // no buttons pressed
+	    place->fadeIn = true;
+	} else if (pressed) {
+	    if (markerCount < SIZE) {
+		place->marker = createMarker(markerCount);
+		markerCount++;
+	    } else {
+		// TODO end game block
+		markerCount = 0;
+	    }
+	}
+    } else {
 	place->fadeIn = false;
+    }
 }
 
