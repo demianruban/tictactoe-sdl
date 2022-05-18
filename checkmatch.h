@@ -1,0 +1,2 @@
+void checkWin(Placement* placements[]);
+
