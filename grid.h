@@ -1,4 +1,4 @@
-#include "placement.h"
+#include "checkmatch.h"
 
 extern SDL_Renderer* renderer;
 
@@ -7,4 +7,5 @@ void updateGrid(Placement* placements[]);
 void mouseMoveGrid(Placement* placements[], SDL_Point mousePos);
 void mouseClickGrid(Placement* placements[], SDL_Point mousePos);
 void renderGrid(Placement* placements[]);
+void destroyGrid(Placement* placements[]);
 

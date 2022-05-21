@@ -7,10 +7,10 @@ CC := clang
 CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c99 -Wall -lSDL2_image
 
 # add header files here
-HDRS := main.h grid.h placement.h marker.h
+HDRS := main.h grid.h placement.h marker.h checkmatch.h
 
 # add source files here
-SRCS := main.c grid.c placement.c marker.c
+SRCS := main.c grid.c placement.c marker.c checkmatch.c
 
 # generate names of object files
 OBJS := $(SRCS:.c=.o)

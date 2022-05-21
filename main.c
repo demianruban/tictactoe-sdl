@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 #include "main.h"
@@ -12,18 +13,19 @@ Placement** grid;
 
 int markerCount = 0;
 
-int main(void) {
+int main() {
 
     if (!init()) {
 	printf("Couldn't initialize!");
 	return 1;
     } else {
+	//TODO argument ROWS
 
 	grid = createGrid();
 
 	loop();
 
-	// TODO add efficient memory freeing
+	destroyGrid(grid);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(win);
 	SDL_Quit();

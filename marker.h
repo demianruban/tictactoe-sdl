@@ -9,4 +9,5 @@ typedef struct {
 extern SDL_Renderer* renderer;
 
 Marker* createMarker(int type);
+void destroyMarker(Marker* marker);
 

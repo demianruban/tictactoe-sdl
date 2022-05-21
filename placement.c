@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <SDL_render.h>
 #include <SDL_mouse.h>
 #include "placement.h"
@@ -31,7 +30,7 @@ Placement* createPlacement(int xIndex, int yIndex, int size)
 
     place->marker = NULL;
 
-#if defined(DEBUG)
+#ifdef DEBUG
     SDL_Log("placement rect: %d %d %d %d", place->rect->x, place->rect->y, place->rect->w, place->rect->h);
 #endif
 
@@ -83,5 +82,12 @@ void clickPlacement(Placement* place, SDL_Point mousePos)
 	    // TODO end game block
 	}
     }
+}
+
+void destroyPlacement(Placement* place)
+{
+    destroyMarker(place->marker);
+    free(place->rect);
+    free(place);
 }
 

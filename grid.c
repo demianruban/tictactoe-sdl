@@ -2,6 +2,7 @@
 #include "grid.h"
 
 extern SDL_Renderer* renderer;
+extern int markerCount;
 
 Placement** createGrid()
 {
@@ -30,7 +31,22 @@ void mouseMoveGrid(Placement* placements[], SDL_Point mousePos)
 void mouseClickGrid(Placement* placements[], SDL_Point mousePos)
 {
     for (int i = 0; i < SIZE; i++)
-	clickPlacement(placements[i], mousePos);
+
+	if (SDL_PointInRect(&mousePos, placements[i]->rect) &&
+		!placements[i]->marker) {
+
+
+	    placements[i]->marker = createMarker(markerCount);
+	    markerCount++;
+
+	    Marker** matchLine = checkWin(placements);
+
+	    if (matchLine != NULL) {
+		SDL_Log("%s WON!", matchLine[0]->type ? "X" : "O");
+	    } else if (markerCount >= SIZE) {
+		SDL_Log("TIE!");
+	    }
+	}
 }
 
 void renderGrid(Placement* placements[])
@@ -67,5 +83,12 @@ void resetGrid(Placement* placements[])
     // TODO winning variables
     /* gameEnd = false; */
     /* winType = -1; */
+}
+
+void destroyGrid(Placement** placements)
+{
+    /* for (int i = 0; i < SIZE; i++) */
+	/* destroyPlacement(placements[i]); */
+    free(placements);
 }
 

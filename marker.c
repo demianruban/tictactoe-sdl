@@ -22,10 +22,17 @@ Marker* createMarker(int type)
         printf("error creating surface: %s\n", SDL_GetError());
 
     marker->tex = SDL_CreateTextureFromSurface(renderer, surface);
+
     SDL_FreeSurface(surface);
     if (!marker->tex)
         printf("error creating texture: %s\n", SDL_GetError());
 
     return marker;
+}
+
+void destroyMarker(Marker* marker)
+{
+    free(marker->tex);
+    free(marker);
 }
 
